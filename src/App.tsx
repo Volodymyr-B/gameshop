@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Header } from "./components/header/Header";
+import { CartPage } from "./pages/cart-page/CartPage";
+import { MainPage } from "./pages/main-page/MainPage";
+import { RegistrationPage } from "./pages/registration-page/RegistrationPage";
+import { NotFoundPage } from "./pages/not-found-page/NotFoundPage";
+import { PersonalPage } from "./pages/personal-page/PersonalPage";
+import { LogInPage } from "./pages/log-in-page/LogInPage";
+import { Footer } from "./components/footer/Footer";
+import { Layout } from "./components/layout/Layout";
+
+import { Route, Routes } from "react-router-dom";
+import { useAuth } from "./hooks/use-auth";
 
 function App() {
+  const { isAuth } = useAuth();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/registration" element={<RegistrationPage />} />
+          {isAuth ? (
+            <Route path="/personal" element={<PersonalPage />} />
+          ) : (
+            <Route path="/login" element={<LogInPage />} />
+          )}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+      <Footer />
+    </>
   );
 }
 
